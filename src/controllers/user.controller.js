@@ -1,6 +1,7 @@
 import User from '../models/user.model';
 import * as Aut from '../controllers/autentication.controller';
 import config from '../config';
+import * as DomainConstant from '../constant/domain/domain';
 
 export const getUsers = async (username,password) => {
     
@@ -12,7 +13,7 @@ export const getUsers = async (username,password) => {
    
     if (users.length === 0){
         result.valid = false;
-        result.response = 'Error interno';
+        result.response = DomainConstant.ERROR_INTERNO;
         return result;
     }
     result.valid = true;

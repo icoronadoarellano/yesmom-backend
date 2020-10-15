@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import * as User from '../controllers/user.controller';
 import * as crypto from '../util/util';
+import * as ErrConst from '../constant/errors/codes';
+import * as ErrResponse from '../util/errors/errorResponse';
+import * as DomainConstant from '../constant/domain/domain';
 
 export const generateToken = async(req,res)=>{
     const app = express();
@@ -14,18 +17,18 @@ export const generateToken = async(req,res)=>{
     const findUser = await User.getUsers(username, password);
 
     if(!findUser.valid){
-        res.json({mensaje:"Request Invalido"});
+        return res.json(ErrResponse.NewErrorResponse(ErrConst.codReqInvalido));
     }else{
         const payload = {
             check:  true
         };
         const token = jwt.sign(payload, app.get('appKey'), {
-            expiresIn: 1440
+            expiresIn: DomainConstant.TOKEN_TIME
         });
         
        if(token){
            res.json({
-               mensaje: 'Autenticación correcta',
+               mensaje: DomainConstant.AUTENTICACION_CORRECTA,
                token: token
            });
        
